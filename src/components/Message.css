@@ -27,3 +27,9 @@
     border-radius: 10px;
     background-color: #1a1b1f
 }
+
+.inner-container {
+    min-height: 100%;
+    scale: 0.98;
+    border-radius: 10px;
+}
