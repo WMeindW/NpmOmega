@@ -1,0 +1,29 @@
+.msg-container {
+    width: 60%;
+    height: 100vh;
+    position: absolute;
+    left: 20%;
+    scale: 0.98;
+    border-radius: 10px;
+    background-color: #1a1b1f
+}
+
+.usr-container {
+    width: 20%;
+    height: 100vh;
+    position: absolute;
+    left: 0;
+    scale: 0.98;
+    border-radius: 10px;
+    background-color: #1a1b1f
+}
+
+.msc-container {
+    width: 20%;
+    height: 100vh;
+    position: absolute;
+    left: 80%;
+    scale: 0.98;
+    border-radius: 10px;
+    background-color: #1a1b1f
+}
