@@ -45,3 +45,41 @@
     scale: 0.99;
     border-radius: 10px;
 }
+.usr-row {
+    width: 100%;
+    scale: 0.99;
+    max-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.msc-row {
+    width: 100%;
+    scale: 0.99;
+    max-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.usr-card {
+    width: 98%;
+    height: 5rem;
+    margin-bottom: 10px;
+    background-color: #1a1b1f;
+}
+
+.msc-card {
+    width: 98%;
+    height: 50em;
+    background-color: #1a1b1f;
+}
+
+::-webkit-scrollbar{
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #1a1b1f;
+    border-radius: 100px;
+}
