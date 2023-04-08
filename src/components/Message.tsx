@@ -5,11 +5,85 @@ export default function Message() {
         <div className="msg-container text-light">
             <div className="inner-container-msg bg-dark">
                 <div className="msg-row mx-auto">
-                    <div className="message">
-                        <span className="sent">Nazdaaaaaaaaaaar</span>
+                    <div className="received">
+                        <div className="message">Nazdaaaaaaaaaaar
+                            <div className="time">14:30</div></div>
                     </div>
-                    <div className="message">
-                        <span className="received">Ahojjjjjjjjjjjjjjjj</span>
+                    <div className="sent">
+                        <div className="message">Ahojjjjjjjjjjjjjjjj
+                            <div className="time">14:30</div></div>
+                    </div>
+                    <div className="received">
+                        <div className="message">Nazdaaaaaaaaaaar
+                            <div className="time">14:30</div></div>
+                    </div>
+                    <div className="sent">
+                        <div className="message">Ahojjjjjjjjjjjjjjjj
+                            <div className="time">14:30</div></div>
+                    </div>
+                    <div className="received">
+                        <div className="message">Nazdaaaaaaaaaaar
+                            <div className="time">14:30</div></div>
+                    </div>
+                    <div className="sent">
+                        <div className="message">Ahojjjjjjjjjjjjjjjj
+                            <div className="time">14:30</div></div>
+                    </div>
+                    <div className="received">
+                        <div className="message">Nazdaaaaaaaaaaar
+                            <div className="time">14:30</div></div>
+                    </div>
+                    <div className="sent">
+                        <div className="message">Ahojjjjjjjjjjjjjjjj
+                            <div className="time">14:30</div></div>
+                    </div>
+                    <div className="received">
+                        <div className="message">Nazdaaaaaaaaaaar
+                            <div className="time">14:30</div></div>
+                    </div>
+                    <div className="sent">
+                        <div className="message">Ahojjjjjjjjjjjjjjjj
+                            <div className="time">14:30</div></div>
+                    </div>
+                    <div className="received">
+                        <div className="message">Nazdaaaaaaaaaaar
+                            <div className="time">14:30</div></div>
+                    </div>
+                    <div className="sent">
+                        <div className="message">Ahojjjjjjjjjjjjjjjj
+                            <div className="time">14:30</div></div>
+                    </div>
+                    <div className="received">
+                        <div className="message">Nazdaaaaaaaaaaar
+                            <div className="time">14:30</div></div>
+                    </div>
+                    <div className="sent">
+                        <div className="message">Ahojjjjjjjjjjjjjjjj
+                            <div className="time">14:30</div></div>
+                    </div>
+                    <div className="received">
+                        <div className="message">Nazdaaaaaaaaaaar
+                            <div className="time">14:30</div></div>
+                    </div>
+                    <div className="sent">
+                        <div className="message">Ahojjjjjjjjjjjjjjjj
+                            <div className="time">14:30</div></div>
+                    </div>
+                    <div className="received">
+                        <div className="message">Nazdaaaaaaaaaaar
+                            <div className="time">14:30</div></div>
+                    </div>
+                    <div className="sent">
+                        <div className="message">Ahojjjjjjjjjjjjjjjj
+                            <div className="time">14:30</div></div>
+                    </div>
+                    <div className="received">
+                        <div className="message">Nazdaaaaaaaaaaar
+                            <div className="time">14:30</div></div>
+                    </div>
+                    <div className="sent">
+                        <div className="message">Ahojjjjjjjjjjjjjjjj
+                            <div className="time">14:30</div></div>
                     </div>
                 </div>
                 <label className="input-label mx-auto">

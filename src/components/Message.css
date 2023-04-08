@@ -79,32 +79,39 @@
 
 .msc-card {
     width: 98%;
-    height: 50em;
+    height: 40em;
     background-color: #1a1b1f;
+}
+.time {
+    font-size: xx-small;
 }
 
 .message {
-    width: 100%;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: #1a1b1f;
+    width: min-content;
     height: min-content;
-    border-color: transparent transparent transparent transparent;
-    background-color: white;
 }
 
 .sent {
-    padding: 5px;
-    border-radius: 10px;
-    background-color: #1a1b1f;
-    width: min-content;
+    width: 100%;
     height: min-content;
-    position: relative;
+    border-color: transparent transparent transparent transparent;
+    background-color: transparent;
+    margin-top: 10px;
+    display: flex;
+    justify-content: right;
 }
 
 .received {
-    padding: 5px;
-    border-radius: 10px;
-    background-color: #1a1b1f;
-    width: min-content;
+    width: 100%;
     height: min-content;
+    border-color: transparent transparent transparent transparent;
+    background-color: transparent;
+    margin-top: 10px;
+    display: flex;
+    justify-content: left;
 }
 
 .input-label {
@@ -116,11 +123,11 @@
 
 .input-text {
     width: 80%;
-    height: 50%;
+    height: 70%;
     text-align: left;
     position: absolute;
     left: 5%;
-    bottom: 25%;
+    bottom: 15%;
     background-color: #1a1b1f;
     border-radius: 10px;
     border-color: transparent transparent transparent transparent;
@@ -128,12 +135,12 @@
 
 .input-button {
     width: 8%;
-    height: 50%;
+    height: 70%;
     background-color: #1a1b1f;
     border-radius: 10px;
     border-color: transparent transparent transparent transparent;
     position: absolute;
-    bottom: 25%;
+    bottom: 15%;
     left: 86%;
 }
 
