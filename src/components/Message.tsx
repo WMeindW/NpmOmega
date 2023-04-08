@@ -116,6 +116,7 @@ export default function Message() {
             <div className="inner-container-msc bg-dark">
                 <div className="row msc-row mx-auto">
                     <div className="card msc-card mx-auto"></div>
+                    <div className="card profile mx-auto"></div>
                 </div>
             </div>
         </div>

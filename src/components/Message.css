@@ -57,7 +57,7 @@
 .msc-row {
     width: 100%;
     scale: 0.99;
-    max-height: 100vh;
+    height: 100vh;
     overflow-x: hidden;
     overflow-y: auto;
 }
@@ -79,11 +79,19 @@
 
 .msc-card {
     width: 98%;
-    height: 40em;
+    max-height: 70%;
     background-color: #1a1b1f;
 }
+
 .time {
     font-size: xx-small;
+}
+
+.profile {
+    background-color: #1a1b1f;
+    height: 10%;
+    width: 98%;
+    margin-top: 10px;
 }
 
 .message {
