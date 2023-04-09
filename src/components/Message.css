@@ -94,7 +94,7 @@
     position: relative;
     left: 0;
     display: flex;
-    justify-content: center;
+    justify-content: right;
     align-items: center;
 }
 
@@ -102,11 +102,12 @@
     width: 20%;
     height: 100%;
     display: flex;
-    justify-content: left;
+    justify-content: center;
     align-items: center;
     position: absolute;
     left: 80%;
     font-size: larger;
+    border-color: transparent transparent transparent transparent;
 }
 
 .profile-username {

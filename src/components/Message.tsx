@@ -118,8 +118,13 @@ export default function Message() {
                     <div className="card msc-card mx-auto"></div>
                     <div className="card profile mx-auto">
                         <label className="profile-username">Username</label>
-                        <label className="profile-img"><img className="img" src="https://www.pngmart.com/files/21/Account-Avatar-Profile-PNG-Photo.png" alt="profile.png"/></label>
-                    <label className="profile-menu">+</label>
+                        <label className="profile-img"><img className="img"
+                                                            src="https://www.pngmart.com/files/21/Account-Avatar-Profile-PNG-Photo.png"
+                                                            alt="profile.png"/></label>
+                        <button type="button" className="profile-menu bg-dark text-light" data-toggle="collapse"
+                                data-target="#collapseMenu">+
+                        </button>
+                        <div id="collapseMenu" className="profile-username collapse">Hello World</div>
                     </div>
                 </div>
             </div>
