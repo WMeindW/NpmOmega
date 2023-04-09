@@ -79,12 +79,49 @@
 
 .msc-card {
     width: 98%;
-    max-height: 70%;
+    max-height: 80%;
     background-color: #1a1b1f;
 }
 
+.img {
+    max-width: 100%;
+    max-height: 80%;
+}
+
+.profile-img {
+    max-width: 40%;
+    height: 100%;
+    position: relative;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-menu {
+    width: 20%;
+    height: 100%;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    position: absolute;
+    left: 80%;
+    font-size: larger;
+}
+
+.profile-username {
+    width: 40%;
+    height: 100%;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    position: absolute;
+    left: 40%;
+    font-size: larger;
+}
+
 .time {
-    font-size: xx-small;
+    font-size: larger;
 }
 
 .profile {
