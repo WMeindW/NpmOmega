@@ -1,3 +1,5 @@
+import "./Profile.css";
+
 export default function Profile() {
     return <p className="text-light">Profile</p>;
 }

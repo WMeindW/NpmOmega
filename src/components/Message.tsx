@@ -1,6 +1,13 @@
 import "./Message.css";
 
-export default function Message() {
+interface Props {
+    Messages: string;
+    Friends: string;
+    User: string;
+    onRedirect: (page: string) => void;
+}
+
+export default function Message(props: Props) {
     return <div>
         <div className="msg-container text-light">
             <div className="inner-container-msg bg-dark">
@@ -121,10 +128,9 @@ export default function Message() {
                         <label className="profile-img"><img className="img"
                                                             src="https://www.pngmart.com/files/21/Account-Avatar-Profile-PNG-Photo.png"
                                                             alt="profile.png"/></label>
-                        <button type="button" className="profile-menu bg-dark text-light" data-toggle="collapse"
-                                data-target="#collapseMenu">+
+                        <button type="button" onClick={() => props.onRedirect("profile")}
+                                className="profile-menu bg-dark text-light">+
                         </button>
-                        <div id="collapseMenu" className="profile-username collapse">Hello World</div>
                     </div>
                 </div>
             </div>
