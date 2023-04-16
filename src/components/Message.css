@@ -6,6 +6,7 @@
     scale: 0.985;
     border-radius: 10px;
     background-color: #1a1b1f
+
 }
 
 .usr-container {
@@ -16,6 +17,7 @@
     scale: 0.985;
     border-radius: 10px;
     background-color: #1a1b1f
+
 }
 
 .msc-container {
@@ -32,18 +34,24 @@
     min-height: 100%;
     scale: 0.995;
     border-radius: 10px;
+    border-color: transparent transparent transparent transparent;
+
 }
 
 .inner-container-usr {
     min-height: 100%;
     scale: 0.99;
     border-radius: 10px;
+    border-color: transparent transparent transparent transparent;
+
 }
 
 .inner-container-msc {
     min-height: 100%;
     scale: 0.99;
     border-radius: 10px;
+    border-color: transparent transparent transparent transparent;
+
 }
 
 .usr-row {
@@ -72,15 +80,10 @@
 
 .usr-card {
     width: 98%;
-    height: 5rem;
+    height: 5em;
     margin-bottom: 10px;
     background-color: #1a1b1f;
-}
-
-.msc-card {
-    width: 98%;
-    max-height: 80%;
-    background-color: #1a1b1f;
+    border-color: transparent transparent transparent transparent;
 }
 
 .img {
@@ -89,36 +92,47 @@
 }
 
 .profile-img {
-    max-width: 40%;
-    height: 100%;
-    position: relative;
-    left: 0;
+    height: 5em;
+    width: 40%;
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    right: 0;
+    top: -1px;
 }
 
 .profile-menu {
+    height: 5em;
     width: 20%;
-    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
-    left: 80%;
-    font-size: larger;
+    border-radius: 10px;
+    position: relative;
+    right: -13px;
+    top: -1px;
     border-color: transparent transparent transparent transparent;
 }
 
 .profile-username {
+    height: 5em;
     width: 40%;
-    height: 100%;
     display: flex;
-    justify-content: left;
+    justify-content: center;
     align-items: center;
-    position: absolute;
-    left: 40%;
-    font-size: larger;
+    position: relative;
+    right: 0;
+    top: -1px;
+}
+
+.profile-activity {
+    height: 5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20%;
+    font-size: small;
 }
 
 .time {
@@ -127,9 +141,10 @@
 
 .profile {
     background-color: #1a1b1f;
-    height: 10%;
+    height: 5em;
     width: 80%;
     margin-top: 10px;
+    border-color: transparent transparent transparent transparent;
 }
 
 .message {
@@ -138,6 +153,7 @@
     background-color: #1a1b1f;
     width: min-content;
     height: min-content;
+    border-color: transparent transparent transparent transparent;
 }
 
 .sent {
