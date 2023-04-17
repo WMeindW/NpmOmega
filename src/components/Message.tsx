@@ -12,7 +12,7 @@ interface Props {
 export default function Message(props: Props) {
     function reload(username: string) {
         const id = document.cookie.split("id=")[1];
-        $.get("/message", {id: id, username: username}, function (data) {
+        $.post("/message", {id: id, username: username}, function (data) {
             if (!data.equals(state)) {
                 setMessage(data);
             }
