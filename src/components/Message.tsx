@@ -1,5 +1,5 @@
 import "./Message.css";
-import {useRef, useState} from "react";
+import { useEffect, useRef, useState} from "react";
 import React from "react";
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
     Send: string;
 }
 
-export default function Message(props: Props) {
+export default function Message(this: any, props: Props) {
     function reload(username: string) {
         const id = document.cookie.split("id=")[1];
         $.post("/message", {id: id, username: username}, function (data) {
@@ -25,16 +25,16 @@ export default function Message(props: Props) {
     const messagesRef = useRef(null);
     const profileRef = useRef(null);
     const sendRef = useRef(null);
-    // @ts-ignore
-    //friendsRef.current.innnerHTML = props.Friends;
-    // @ts-ignore
-    //messagesRef.current.innnerHTML = message;
-    // @ts-ignore
-    //profileRef.current.innnerHTML = props.User;
-    // @ts-ignore
-    //sendRef.current.innnerHTML = props.Send;
-
-
+    useEffect((): void => {
+        // @ts-ignore
+        friendsRef.current.innnerHTML = props.Friends;
+        // @ts-ignore
+        messagesRef.current.innnerHTML = message;
+        // @ts-ignore
+        profileRef.current.innnerHTML = props.User;
+        // @ts-ignore
+        sendRef.current.innnerHTML = props.Send;
+    });
     return <div>
         <div className="msg-container text-light">
             <div className="inner-container-msg bg-dark">
