@@ -30,15 +30,6 @@ export default function AddFriend(props: Props) {
                        className="input-search mx-auto bg-dark text-light"/>
             </div>
             <div ref={ref} className="container-user row">
-                <div className="card user-card row bg-dark">
-                    <div className="profile-img"><img className="img"
-                                                      src="https://www.shutterstock.com/image-vector/man-icon-vector-260nw-1040084344.jpg"
-                                                      alt="profile.png"/></div>
-                    <div className="profile-username text-light">Username</div>
-                    <button type="button"
-                            className="profile-add bg-primary text-light" onClick={() => add("")}>+
-                    </button>
-                </div>
             </div>
         </div>);
 }

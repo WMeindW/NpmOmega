@@ -1,5 +1,5 @@
 import "./Profile.css";
-import {useRef} from "react";
+import {useEffect, useRef} from "react";
 
 interface Props {
     Info: string;
@@ -7,7 +7,10 @@ interface Props {
 
 export default function Profile(props: Props) {
     const infoRef = useRef(null);
-
+    useEffect(() => {
+        // @ts-ignore
+        infoRef.current.innerHtml = props.Info;
+    });
     return (<div ref={infoRef}>
         </div>
     );
