@@ -1,12 +1,24 @@
 import "./AddFriend.css";
+import $ from "jquery";
+import {useRef, useState} from "react";
 
 interface Props {
     onRedirect: (page: string) => void;
 }
 
 export default function AddFriend(props: Props) {
-    function query(query: string) {
+    const id = document.cookie.split("id=")[1];
+    const ref = useRef(null);
 
+    function query(query: string) {
+        $.post("/query", {id: id, query: query}, function (data) {
+            // @ts-ignore
+            ref.current.innerHTML = data;
+        });
+    }
+
+    function add(addId: string) {
+        $.post("/add", {id: id, addId: addId});
     }
 
     return (
@@ -17,14 +29,14 @@ export default function AddFriend(props: Props) {
                 <input type="text" onChange={(event) => query(event.currentTarget.value)}
                        className="input-search mx-auto bg-dark text-light"/>
             </div>
-            <div className="container-user row">
+            <div ref={ref} className="container-user row">
                 <div className="card user-card row bg-dark">
                     <div className="profile-img"><img className="img"
                                                       src="https://www.shutterstock.com/image-vector/man-icon-vector-260nw-1040084344.jpg"
                                                       alt="profile.png"/></div>
                     <div className="profile-username text-light">Username</div>
                     <button type="button"
-                            className="profile-add bg-primary text-light">+
+                            className="profile-add bg-primary text-light" onClick={() => add("")}>+
                     </button>
                 </div>
             </div>
