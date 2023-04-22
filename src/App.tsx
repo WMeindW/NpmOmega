@@ -7,14 +7,13 @@ interface Props {
     info: string;
     friends: string;
     user: string;
-    send: string;
 }
 
 export default function App(props: Props) {
 
     let element = <Message Friends={props.friends} User={props.user}
-                           onRedirect={(profile) => redirect(profile)} Send={props.send}></Message>;
-    element = <AddFriend onRedirect={(addBack) => redirect(addBack)}></AddFriend>;
+                           onRedirect={(profile) => redirect(profile)}></Message>;
+    //element = <AddFriend onRedirect={(addBack) => redirect(addBack)}></AddFriend>;
     const [display, setDisplay] = useState(element);
 
     function redirect(page: string) {
@@ -23,7 +22,10 @@ export default function App(props: Props) {
         }
         if (page === "addBack") {
             setDisplay(<Message Friends={props.friends} User={props.user}
-                                onRedirect={(profile) => redirect(profile)} Send={props.send}></Message>);
+                                onRedirect={(profile) => redirect(profile)}></Message>);
+        }
+        if (page === "add") {
+            setDisplay(<AddFriend onRedirect={(addBack: string) => redirect(addBack)}></AddFriend>);
         }
     }
 

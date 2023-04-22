@@ -9,9 +9,6 @@ let info: string = "";
 let friends: string = "";
 let user: string = "";
 let send: string = "";
-$.post("/sendHook", {id: id}, function (data) {
-    send = data;
-});
 $.post("/info", {id: id}, function (data) {
     info = data;
 });
@@ -23,6 +20,6 @@ $.post("/user", {id: id}, function (data) {
 });
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
-        <App info={info} friends={friends} user={user} send={send}/>
+        <App info={info} friends={friends} user={user}/>
     </React.StrictMode>,
 );

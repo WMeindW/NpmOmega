@@ -1,21 +1,26 @@
 import "./Message.css";
-import { useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import React from "react";
+import $ from "jquery";
 
 interface Props {
     Friends: string;
     User: string;
     onRedirect: (page: string) => void;
-    Send: string;
 }
 
-export default function Message(this: any, props: Props) {
+export default function Message(props: Props) {
+    let send = "";
+
     function reload(username: string) {
         const id = document.cookie.split("id=")[1];
         $.post("/message", {id: id, username: username}, function (data) {
             if (!data.equals(state)) {
                 setMessage(data);
             }
+        });
+        $.post("/sendHook", {id: id, username: username}, function (data) {
+            send = data;
         });
     }
 
@@ -33,7 +38,7 @@ export default function Message(this: any, props: Props) {
         // @ts-ignore
         profileRef.current.innnerHTML = props.User;
         // @ts-ignore
-        sendRef.current.innnerHTML = props.Send;
+        sendRef.current.innnerHTML = send;
     });
     return <div>
         <div className="msg-container text-light">
@@ -52,8 +57,11 @@ export default function Message(this: any, props: Props) {
         </div>
         <div className="msc-container text-light">
             <div className="inner-container-msc bg-dark">
-                <div className="row msc-row mx-auto">
-                    <div ref={profileRef} className="card profile row mx-auto">
+                <div className=" msc-row mx-auto">
+                    <div ref={profileRef} className="profile row mx-auto">
+                    </div>
+                    <div className="addFriend mx-auto">
+                        <button onClick={() => props.onRedirect("add")} className="addButton btn btn-primary">+</button>
                     </div>
                 </div>
             </div>

@@ -145,6 +145,23 @@
     width: 80%;
     margin-top: 10px;
     border-color: transparent transparent transparent transparent;
+    border-radius: 10px;
+}
+
+.addFriend {
+    background-color: #1a1b1f;
+    height: 5em;
+    width: 80%;
+    margin-top: 10px;
+    border-color: transparent transparent transparent transparent;
+    border-radius: 10px;
+}
+
+.addButton {
+    height: 5em;
+    width: 100%;
+    border-color: transparent transparent transparent transparent;
+    border-radius: 10px;
 }
 
 .message {
