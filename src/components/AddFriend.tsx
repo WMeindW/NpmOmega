@@ -1,6 +1,6 @@
 import "./AddFriend.css";
-import $ from "jquery";
-import {useRef, useState} from "react";
+import $, {data} from "jquery";
+import {useEffect, useRef, useState} from "react";
 
 interface Props {
     onRedirect: (page: string) => void;
@@ -8,12 +8,11 @@ interface Props {
 
 export default function AddFriend(props: Props) {
     const id = document.cookie.split("id=")[1];
-    const ref = useRef(null);
-
+    const queries = useRef(null);
     function query(query: string) {
         $.post("/query", {id: id, query: query}, function (data) {
             // @ts-ignore
-            ref.current.innerHTML = data;
+            queries.current.innerHTML = data;
         });
     }
 
@@ -29,7 +28,7 @@ export default function AddFriend(props: Props) {
                 <input type="text" onChange={(event) => query(event.currentTarget.value)}
                        className="input-search mx-auto bg-dark text-light"/>
             </div>
-            <div ref={ref} className="container-user row">
+            <div ref={queries} className="container-user row">
             </div>
         </div>);
 }
