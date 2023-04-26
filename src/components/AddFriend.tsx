@@ -1,6 +1,6 @@
 import "./AddFriend.css";
 import $, {data} from "jquery";
-import {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 
 interface Props {
     onRedirect: (page: string) => void;
@@ -8,11 +8,26 @@ interface Props {
 
 export default function AddFriend(props: Props) {
     const id = document.cookie.split("id=")[1];
-    const queries = useRef(null);
+    const [queries, setQueries] = useState([<div></div>]);
+
     function query(query: string) {
         $.post("/query", {id: id, query: query}, function (data) {
-            // @ts-ignore
-            queries.current.innerHTML = data;
+            const elements: JSX.Element[] = [];
+            const list = data.split("#");
+            for (let i = 0; i < elements.length - 1; i++) {
+                elements[i] = <div className="card user-card row bg-dark">
+                    <div className="profile-img"><img className="img"
+                                                      src={"/profile?" + list[i].split("&")[0]}
+                                                      alt="profile.png"/></div>
+                    <div className="profile-username text-light">{list[i].split("&")[1]}</div>
+                    <button type="button"
+                            className="profile-add bg-primary text-light" onClick={() => add(list[i].split("&")[0])}>+
+                    </button>
+                </div>;
+                console.log(elements[i]);
+            }
+
+            setQueries(elements);
         });
     }
 
@@ -28,7 +43,8 @@ export default function AddFriend(props: Props) {
                 <input type="text" onChange={(event) => query(event.currentTarget.value)}
                        className="input-search mx-auto bg-dark text-light"/>
             </div>
-            <div ref={queries} className="container-user row">
+            <div className="container-user row">
+                {queries}
             </div>
         </div>);
 }
