@@ -12,11 +12,15 @@ export default function Message(props: Props) {
     userStorage += localStorage.getItem("userState");
     let friendStorage = "";
     friendStorage += localStorage.getItem("friendState");
+    let messageStorage = "";
+    messageStorage += localStorage.getItem("messageState");
+    let hookStorage = "";
+    hookStorage += localStorage.getItem("hookState");
     const id = document.cookie.split("id=")[1];
-    const [message, setMessage] = useState([<div></div>]);
+    const [message, setMessage] = useState(parseMessage(messageStorage));
     const [profile, setProfile] = useState(parseUser(userStorage));
     const [friends, setFriends] = useState(parseFriends(friendStorage));
-    const [hook, setHook] = useState(<div></div>);
+    const [hook, setHook] = useState(parseHook(hookStorage));
 
     function parseUser(data: string): JSX.Element {
         return <>
@@ -46,38 +50,47 @@ export default function Message(props: Props) {
         return friends;
     }
 
-    function reload(username: string) {
-        $.post("/message", {id: id, username: username}, function (data) {
-            const list = data.split("#");
-            let messages: JSX.Element[] = [];
-            for (let i = 0; i < list.length - 1; i++) {
-                if (list[i].substring(0, 1).equals("1")) {
-                    list[i] = list[i].substring(1).replace("#", "");
-                    messages[i] = <div className="sent">
-                        <div className="message">{list[i].split("&")[0]}
-                            <div className="time">{list[i].split("&")[1]}</div>
-                        </div>
-                    </div>;
-                } else if (list[i].substring(0, 1).equals("0")) {
-                    list[i] = list[i].substring(1).replace("#", "");
-                    messages[i] = <div className="received">
-                        <div className="message">{list[i].split("&")[0]}
-                            <div className="time">{list[i].split("&")[1]}</div>
-                        </div>
-                    </div>;
-                }
-                setMessage(messages);
+    function parseMessage(data: string): JSX.Element[] {
+        const list = data.split("#");
+        let messages: JSX.Element[] = [];
+        for (let i = 0; i < list.length - 1; i++) {
+            if (list[i].substring(0, 1) == ("1")) {
+                list[i] = list[i].substring(1).replace("#", "");
+                messages[i] = <div className="sent">
+                    <div className="message">{list[i].split("&")[0]}
+                        <div className="time">{list[i].split("&")[1]}</div>
+                    </div>
+                </div>;
+            } else if (list[i].substring(0, 1) == ("0")) {
+                list[i] = list[i].substring(1).replace("#", "");
+                messages[i] = <div className="received">
+                    <div className="message">{list[i].split("&")[0]}
+                        <div className="time">{list[i].split("&")[1]}</div>
+                    </div>
+                </div>;
             }
-        });
-        $.post("/sendHook", {id: id, username: username}, function (data) {
-            setHook(<form method="post" action={"/send?" + data.split("&")[0]}>
-                <input type="hidden" name="username" value={data.split("&")[1]}/>
-                <input name="message" type="text" className="input-text text-light"/>
-                <input type="submit" value="Send" className="input-button text-light"/>
-            </form>);
-        });
+        }
+        return messages;
     }
 
+    function parseHook(data: string): JSX.Element {
+        return <form method="post" action={"/send?" + data.split("&")[0]}>
+            <input type="hidden" name="username" value={data.split("&")[1]}/>
+            <input name="message" type="text" className="input-text text-light"/>
+            <input type="submit" value="Send" className="input-button text-light"/>
+        </form>;
+    }
+
+    function reload(username: string) {
+        $.post("/message", {id: id, username: username}, function (data) {
+            localStorage.setItem("messageState", data);
+            setMessage(parseMessage(data));
+        });
+        $.post("/sendHook", {id: id, username: username}, function (data) {
+            localStorage.setItem("hookState", data);
+            setHook(parseHook(data));
+        });
+    }
     $.post("/friends", {id: id}, function (data) {
         if (data != friendStorage) {
             localStorage.setItem("friendState", data);
