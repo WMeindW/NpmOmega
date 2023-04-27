@@ -2,16 +2,49 @@ import "./Message.css";
 import {SetStateAction, useEffect, useRef, useState} from "react";
 import React from "react";
 import $ from "jquery";
+
 interface Props {
     onRedirect: (page: string) => void;
 }
 
 export default function Message(props: Props) {
+    let userStorage = "";
+    userStorage += localStorage.getItem("userState");
+    let friendStorage = "";
+    friendStorage += localStorage.getItem("friendState");
     const id = document.cookie.split("id=")[1];
     const [message, setMessage] = useState([<div></div>]);
-    const [profile, setProfile] = useState(<div></div>);
-    const [friends, setFriends] = useState([<div></div>]);
+    const [profile, setProfile] = useState(parseUser(userStorage));
+    const [friends, setFriends] = useState(parseFriends(friendStorage));
     const [hook, setHook] = useState(<div></div>);
+
+    function parseUser(data: string): JSX.Element {
+        return <>
+            <div className="profile-img"><img className="img" src={"/profile?" + data.split("&")[0]}
+                                              alt="profile.png"/>
+            </div>
+            <div className="profile-username">{data.split("&")[1]}</div>
+            <button type="button" onClick={() => props.onRedirect("profile")}
+                    className="profile-menu bg-dark text-light">+
+            </button>
+        </>;
+    }
+
+    function parseFriends(data: string): JSX.Element[] {
+        const list = data.split("#");
+        let friends: JSX.Element[] = [];
+        for (let i = 0; i < list.length - 1; i++) {
+            list[i] = list[i].replace("#", "");
+            friends[i] = <div className="card row usr-card mx-auto" onClick={() => reload(list[i].split("&")[0])}>
+                <div className="profile-img"><img className="img"
+                                                  src={"/profile?" + list[i].split("&")[1]}
+                                                  alt="profile.png"/></div>
+                <div className="profile-username">{list[i].split("&")[0]}</div>
+                <div className="profile-activity text-light">{list[i].split("&")[2]}</div>
+            </div>;
+        }
+        return friends;
+    }
 
     function reload(username: string) {
         $.post("/message", {id: id, username: username}, function (data) {
@@ -46,30 +79,19 @@ export default function Message(props: Props) {
     }
 
     $.post("/friends", {id: id}, function (data) {
-        const list = data.split("#");
-        let friends: JSX.Element[] = [];
-        for (let i = 0; i < list.length - 1; i++) {
-            list[i] = list[i].replace("#", "");
-            friends[i] = <div className="card row usr-card mx-auto" onClick={() => reload(list[i].split("&")[0])}>
-                <div className="profile-img"><img className="img"
-                                                  src={"/profile?" + list[i].split("&")[1]}
-                                                  alt="profile.png"/></div>
-                <div className="profile-username">{list[i].split("&")[0]}</div>
-                <div className="profile-activity text-light">{list[i].split("&")[2]}</div>
-            </div>;
+        if (data != friendStorage) {
+            localStorage.setItem("friendState", data);
+            setFriends(parseFriends(data));
         }
-        setFriends(friends);
+
     });
     $.post("/user", {id: id}, function (data) {
-        setProfile(<>
-            <div className="profile-img"><img className="img" src={"/profile?" + data.split("&")[0]} alt="profile.png"/>
-            </div>
-            <div className="profile-username">{data.split("&")[1]}</div>
-            <button type="button" onClick={() => props.onRedirect("profile")}
-                    className="profile-menu bg-dark text-light">+
-            </button>
-        </>);
-    });
+            if (data != userStorage) {
+                localStorage.setItem("userState", data);
+                setProfile(parseUser(data));
+            }
+        }
+    );
     return <div>
         <div className="msg-container text-light">
             <div className="inner-container-msg bg-dark">

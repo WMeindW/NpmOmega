@@ -14,7 +14,7 @@ export default function AddFriend(props: Props) {
         $.post("/query", {id: id, query: query}, function (data) {
             const elements: JSX.Element[] = [];
             const list = data.split("#");
-            for (let i = 0; i < elements.length - 1; i++) {
+            for (let i = 0; i < list.length - 1; i++) {
                 elements[i] = <div className="card user-card row bg-dark">
                     <div className="profile-img"><img className="img"
                                                       src={"/profile?" + list[i].split("&")[0]}
@@ -24,9 +24,7 @@ export default function AddFriend(props: Props) {
                             className="profile-add bg-primary text-light" onClick={() => add(list[i].split("&")[0])}>+
                     </button>
                 </div>;
-                console.log(elements[i]);
             }
-
             setQueries(elements);
         });
     }
