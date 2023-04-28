@@ -16,7 +16,7 @@ export default function AddFriend(props: Props) {
             const list = data.split("#");
             for (let i = 0; i < list.length - 1; i++) {
                 elements[i] = <div className="card user-card row bg-dark">
-                    <div className="profile-img"><img className="img"
+                    <div className="profile-img"><img className="img text-light"
                                                       src={"/profile?" + list[i].split("&")[0]}
                                                       alt="profile.png"/></div>
                     <div className="profile-username text-light">{list[i].split("&")[1]}</div>

@@ -23,8 +23,7 @@ export default function Profile() {
                     <div className="info-section">
                         <p className="info-section-heading bg-dark text-light">Username</p>
                         <input className="info-section-text bg-dark text-light" name="username"
-                               value={data.split("&")[1]}
-                               type="text"/>
+                               value={data.split("&")[1]}/>
                     </div>
                     <div className="info-section">
                         <p className="info-section-heading bg-dark text-light">Password</p>
@@ -34,7 +33,7 @@ export default function Profile() {
                     </div>
                     <div className="info-section">
                         <p className="info-section-heading bg-dark text-light">Bio</p>
-                        <input className="info-section-text bg-dark text-light" name="bio" value={data.split("&")[2]}
+                        <input className="info-section-text bg-dark text-light" name="bio" value={data.split("&")[3]}
                                type="text"/>
                     </div>
                 </div>

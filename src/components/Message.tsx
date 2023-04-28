@@ -8,33 +8,35 @@ interface Props {
 }
 
 export default function Message(props: Props) {
-    let userStorage = "";
-    userStorage += localStorage.getItem("userState");
-    let friendStorage = "";
-    friendStorage += localStorage.getItem("friendState");
-    let messageStorage = "";
-    messageStorage += localStorage.getItem("messageState");
-    let hookStorage = "";
-    hookStorage += localStorage.getItem("hookState");
+    let userStorage = localStorage.getItem("userState");
+    let friendStorage = localStorage.getItem("friendState");
+    let messageStorage = localStorage.getItem("messageState");
+    let hookStorage = localStorage.getItem("hookState");
     const id = document.cookie.split("id=")[1];
     const [message, setMessage] = useState(parseMessage(messageStorage));
     const [profile, setProfile] = useState(parseUser(userStorage));
     const [friends, setFriends] = useState(parseFriends(friendStorage));
     const [hook, setHook] = useState(parseHook(hookStorage));
 
-    function parseUser(data: string): JSX.Element {
+    function parseUser(data: string | null): JSX.Element {
+        if (data == null) {
+            return <div></div>;
+        }
         return <>
             <div className="profile-img"><img className="img" src={"/profile?" + data.split("&")[0]}
                                               alt="profile.png"/>
             </div>
             <div className="profile-username">{data.split("&")[1]}</div>
             <button type="button" onClick={() => props.onRedirect("profile")}
-                    className="profile-menu bg-dark text-light">+
+                    className="profile-menu bg-primary text-light">+
             </button>
         </>;
     }
 
-    function parseFriends(data: string): JSX.Element[] {
+    function parseFriends(data: string | null): JSX.Element[] {
+        if (data == null) {
+            return [<div></div>];
+        }
         const list = data.split("#");
         let friends: JSX.Element[] = [];
         for (let i = 0; i < list.length - 1; i++) {
@@ -50,7 +52,10 @@ export default function Message(props: Props) {
         return friends;
     }
 
-    function parseMessage(data: string): JSX.Element[] {
+    function parseMessage(data: string | null): JSX.Element[] {
+        if (data == null) {
+            return [<div></div>];
+        }
         const list = data.split("#");
         let messages: JSX.Element[] = [];
         for (let i = 0; i < list.length - 1; i++) {
@@ -73,7 +78,10 @@ export default function Message(props: Props) {
         return messages;
     }
 
-    function parseHook(data: string): JSX.Element {
+    function parseHook(data: string | null): JSX.Element {
+        if (data == null) {
+            return <div></div>;
+        }
         return <form method="post" action={"/send?" + data.split("&")[0]}>
             <input type="hidden" name="username" value={data.split("&")[1]}/>
             <input name="message" type="text" className="input-text text-light"/>
@@ -91,6 +99,7 @@ export default function Message(props: Props) {
             setHook(parseHook(data));
         });
     }
+
     $.post("/friends", {id: id}, function (data) {
         if (data != friendStorage) {
             localStorage.setItem("friendState", data);
