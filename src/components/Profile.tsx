@@ -1,6 +1,6 @@
 import "./Profile.css";
 import React, {useEffect, useRef, useState} from "react";
-import $ from "jquery";
+import $, {post} from "jquery";
 
 interface Props {
     onRedirect: (page: string) => void;
