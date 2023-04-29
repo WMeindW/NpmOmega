@@ -99,7 +99,6 @@ export default function Message(props: Props) {
             setHook(parseHook(data));
         });
     }
-
     $.post("/friends", {id: id}, function (data) {
         if (data != friendStorage) {
             localStorage.setItem("friendState", data);
