@@ -20,6 +20,17 @@ export default function Profile(props: Props) {
     const [bio, setBio] = useState(infoStorage.split("&")[3]);
     const [idState, setId] = useState(infoStorage.split("&")[0]);
 
+    function edit() {
+        $.post("/edit", {
+            id: idState,
+            username: username,
+            password: password,
+            bio: bio
+        }, function (data) {
+        });
+        props.onRedirect("profileBack");
+    }
+
     function logout() {
         localStorage.clear();
     }
@@ -49,7 +60,7 @@ export default function Profile(props: Props) {
             <img className="picture bg-dark"
                  src={"/profile?" + idState}
                  alt="profile.png"/>
-            <button onClick={() => props.onRedirect("profileBack")} formAction={"/edit?" + idState}
+            <button onClick={() => edit()}
                     className="action-button btn btn-primary">Save
             </button>
             <button onClick={() => logout()} formAction={"/logout?" + idState}
@@ -78,5 +89,5 @@ export default function Profile(props: Props) {
                        onChange={(e) => formStateUpdate(e)}/>
             </div>
         </div>
-    </form>
+    </form>;
 }
