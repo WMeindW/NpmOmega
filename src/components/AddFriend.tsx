@@ -33,9 +33,7 @@ export default function AddFriend(props: Props) {
 
     function add(addId: string) {
         $.post("/add", {id: id, addId: addId}, (data) => {
-            if (data == "success") {
-                query(queryString);
-            }
+            query(queryString);
         });
     }
 
