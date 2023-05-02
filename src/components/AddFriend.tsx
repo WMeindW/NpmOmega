@@ -9,8 +9,10 @@ interface Props {
 export default function AddFriend(props: Props) {
     const id = document.cookie.split("id=")[1];
     const [queries, setQueries] = useState([<div></div>]);
+    let queryString = "";
 
     function query(query: string) {
+        queryString = query;
         $.post("/query", {id: id, query: query}, function (data) {
             const elements: JSX.Element[] = [];
             const list = data.split("#");
@@ -30,7 +32,11 @@ export default function AddFriend(props: Props) {
     }
 
     function add(addId: string) {
-        $.post("/add", {id: id, addId: addId});
+        $.post("/add", {id: id, addId: addId}, (data) => {
+            if (data == "success") {
+                query(queryString);
+            }
+        });
     }
 
     return (
