@@ -9,10 +9,9 @@ interface Props {
 export default function AddFriend(props: Props) {
     const id = document.cookie.split("id=")[1];
     const [queries, setQueries] = useState([<div></div>]);
-    let queryString = "";
+    let element = null;
 
     function query(query: string) {
-        queryString = query;
         $.post("/query", {id: id, query: query}, function (data) {
             const elements: JSX.Element[] = [];
             const list = data.split("#");
@@ -23,7 +22,8 @@ export default function AddFriend(props: Props) {
                                                       alt="profile.png"/></div>
                     <div className="profile-username text-light">{list[i].split("&")[1]}</div>
                     <button type="button"
-                            className="profile-add bg-primary text-light" onClick={() => add(list[i].split("&")[0])}>+
+                            className="profile-add bg-primary text-light"
+                            onClick={() => add(list[i].split("&")[0], i)}>+
                     </button>
                 </div>;
             }
@@ -31,9 +31,11 @@ export default function AddFriend(props: Props) {
         });
     }
 
-    function add(addId: string) {
+    function add(addId: string, index: number) {
         $.post("/add", {id: id, addId: addId}, (data) => {
-            query(queryString);
+            const elements = queries;
+            queries[index] = <div></div>;
+            setQueries(queries);
         });
     }
 
