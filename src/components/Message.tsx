@@ -58,7 +58,7 @@ export default function Message(props: Props) {
         }
         const list = data.split("#");
         let messages: JSX.Element[] = [];
-        for (let i = 0; i < list.length - 1; i++) {
+        for (let i = 0; i < list.length; i++) {
             if (list[i].substring(0, 1) == ("1")) {
                 list[i] = list[i].substring(1).replace("#", "");
                 messages[i] = <div className="sent">
