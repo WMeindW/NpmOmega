@@ -34,8 +34,8 @@ export default function AddFriend(props: Props) {
     function add(addId: string, index: number) {
         $.post("/add", {id: id, addId: addId}, (data) => {
             const elements = queries;
-            queries[index] = <div></div>;
-            setQueries(queries);
+            elements[index] = <div></div>;
+            setQueries(elements);
         });
     }
 
