@@ -1,5 +1,5 @@
 import "./Message.css";
-import {SetStateAction, useEffect, useRef, useState} from "react";
+import {useState} from "react";
 import React from "react";
 import $ from "jquery";
 
@@ -12,11 +12,49 @@ export default function Message(props: Props) {
     let friendStorage = localStorage.getItem("friendState");
     let messageStorage = localStorage.getItem("messageState");
     let hookStorage = localStorage.getItem("hookState");
+    let usernameState: string = "";
     const id = document.cookie.split("id=")[1];
     const [message, setMessage] = useState(parseMessage(messageStorage));
     const [profile, setProfile] = useState(parseUser(userStorage));
     const [friends, setFriends] = useState(parseFriends(friendStorage));
-    const [hook, setHook] = useState(parseHook(hookStorage));
+    const [hook, setHook] = useState(parseHook(hookStorage, ""));
+    let index = 0;
+    window.addEventListener("mousemove", () => updateMessages())
+    window.addEventListener("keypress", (e) => updateMessagesOnKey(e))
+
+    function updateMessages() {
+        index++;
+        if (index > 20 && usernameState != "") {
+            $.post("/message", {id: id, username: usernameState}, function (data) {
+                if (data != messageStorage) {
+                    localStorage.setItem("messageState", data);
+                    setMessage(parseMessage(data));
+                }
+            });
+            index = 0;
+        }
+    }
+
+    function updateMessagesOnKey(event: KeyboardEvent) {
+        index++;
+        if (event.key === "Enter" && usernameState != "") {
+            $.post("/message", {id: id, username: usernameState}, function (data) {
+                if (data != messageStorage) {
+                    localStorage.setItem("messageState", data);
+                    setMessage(parseMessage(data));
+                }
+                index = 0;
+            });
+        } else if (index > 5 && usernameState != "") {
+            $.post("/message", {id: id, username: usernameState}, function (data) {
+                if (data != messageStorage) {
+                    localStorage.setItem("messageState", data);
+                    setMessage(parseMessage(data));
+                }
+            });
+            index = 0;
+        }
+    }
 
     function parseUser(data: string | null): JSX.Element {
         if (data == null) {
@@ -78,27 +116,45 @@ export default function Message(props: Props) {
         return messages;
     }
 
-    function parseHook(data: string | null): JSX.Element {
+    function parseHook(data: string | null, value: string): JSX.Element {
         if (data == null) {
             return <div></div>;
         }
         return <form method="post" action={"/send?" + data.split("&")[0]}>
             <input type="hidden" name="username" value={data.split("&")[1]}/>
-            <input name="message" type="text" className="input-text text-light"/>
-            <input type="submit" value="Send" className="input-button text-light"/>
+            <input id="chatBox" defaultValue={value} name="message" type="text" className="input-text text-light"/>
+            <input formAction={} onClick={() => clearMessage()} type="submit" value="Send" className="input-button text-light"/>
         </form>;
     }
 
-    function reload(username: string) {
-        $.post("/message", {id: id, username: username}, function (data) {
-            localStorage.setItem("messageState", data);
-            setMessage(parseMessage(data));
-        });
-        $.post("/sendHook", {id: id, username: username}, function (data) {
-            localStorage.setItem("hookState", data);
-            setHook(parseHook(data));
-        });
+    function clearMessage() {
+        const chatbox = document.getElementById("chatBox");
+        // @ts-ignore
+        console.log(chatbox.value);
+        // @ts-ignore
+        chatbox.value = "";
     }
+
+    function reload(username: string) {
+        if (username != usernameState) {
+            usernameState = username;
+        }
+        if (username != null && username != "") {
+            $.post("/message", {id: id, username: username}, function (data) {
+                if (data != messageStorage) {
+                    localStorage.setItem("messageState", data);
+                    setMessage(parseMessage(data));
+                }
+            });
+            $.post("/sendHook", {id: id, username: username}, function (data) {
+                if (data != hookStorage) {
+                    localStorage.setItem("hookState", data);
+                    setHook(parseHook(data, ""));
+                }
+            });
+        }
+    }
+
     $.post("/friends", {id: id}, function (data) {
         if (data != friendStorage) {
             localStorage.setItem("friendState", data);
