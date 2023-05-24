@@ -11,19 +11,19 @@ export default function Message(props: Props) {
     let userStorage = localStorage.getItem("userState");
     let friendStorage = localStorage.getItem("friendState");
     let messageStorage = localStorage.getItem("messageState");
-    let hookStorage = localStorage.getItem("hookState");
     let usernameState: string = "";
+    let hookStorage = localStorage.getItem("hookState");
     const id = document.cookie.split("id=")[1];
     const [message, setMessage] = useState(parseMessage(messageStorage));
     const [profile, setProfile] = useState(parseUser(userStorage));
     const [friends, setFriends] = useState(parseFriends(friendStorage));
-    const [hook, setHook] = useState(parseHook(hookStorage, ""));
+    const [hook, setHook] = useState(parseHook(hookStorage));
     let index = 0;
     window.addEventListener("mousemove", () => updateMessages())
     window.addEventListener("keypress", (e) => updateMessagesOnKey(e))
 
     function updateMessages() {
-        index++;
+        /*index++;
         if (index > 20 && usernameState != "") {
             $.post("/message", {id: id, username: usernameState}, function (data) {
                 if (data != messageStorage) {
@@ -32,28 +32,28 @@ export default function Message(props: Props) {
                 }
             });
             index = 0;
-        }
+        }*/
     }
 
     function updateMessagesOnKey(event: KeyboardEvent) {
-        index++;
-        if (event.key === "Enter" && usernameState != "") {
-            $.post("/message", {id: id, username: usernameState}, function (data) {
-                if (data != messageStorage) {
-                    localStorage.setItem("messageState", data);
-                    setMessage(parseMessage(data));
-                }
-                index = 0;
-            });
-        } else if (index > 5 && usernameState != "") {
-            $.post("/message", {id: id, username: usernameState}, function (data) {
-                if (data != messageStorage) {
-                    localStorage.setItem("messageState", data);
-                    setMessage(parseMessage(data));
-                }
-            });
-            index = 0;
-        }
+        /* index++;
+         if (event.key === "Enter" && usernameState != "") {
+             $.post("/message", {id: id, username: usernameState}, function (data) {
+                 if (data != messageStorage) {
+                     localStorage.setItem("messageState", data);
+                     setMessage(parseMessage(data));
+                 }
+                 index = 0;
+             });
+         } else if (index > 5 && usernameState != "") {
+             $.post("/message", {id: id, username: usernameState}, function (data) {
+                 if (data != messageStorage) {
+                     localStorage.setItem("messageState", data);
+                     setMessage(parseMessage(data));
+                 }
+             });
+             index = 0;
+         }*/
     }
 
     function parseUser(data: string | null): JSX.Element {
@@ -116,23 +116,28 @@ export default function Message(props: Props) {
         return messages;
     }
 
-    function parseHook(data: string | null, value: string): JSX.Element {
+    function parseHook(data: string | null): JSX.Element {
         if (data == null) {
             return <div></div>;
         }
-        return <form method="post" action={"/send?" + data.split("&")[0]}>
+        return <form onSubmit={(e) => clear(e)} method="post" action={"/send?" + data.split("&")[0]}>
             <input type="hidden" name="username" value={data.split("&")[1]}/>
-            <input id="chatBox" defaultValue={value} name="message" type="text" className="input-text text-light"/>
-            <input formAction={} onClick={() => clearMessage()} type="submit" value="Send" className="input-button text-light"/>
+            <input id="chat" name="message" type="text" className="input-text text-light"/>
+            <input type="submit" value="Send"
+                   className="input-button text-light"/>
         </form>;
     }
 
-    function clearMessage() {
-        const chatbox = document.getElementById("chatBox");
-        // @ts-ignore
-        console.log(chatbox.value);
-        // @ts-ignore
-        chatbox.value = "";
+    function delay(ms: number) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function clear(event: React.FormEvent<HTMLFormElement>) {
+        const form = event.currentTarget;
+        if (form != null) {
+            await delay(100);
+            form.reset();
+        }
     }
 
     function reload(username: string) {
@@ -149,7 +154,7 @@ export default function Message(props: Props) {
             $.post("/sendHook", {id: id, username: username}, function (data) {
                 if (data != hookStorage) {
                     localStorage.setItem("hookState", data);
-                    setHook(parseHook(data, ""));
+                    setHook(parseHook(data));
                 }
             });
         }
