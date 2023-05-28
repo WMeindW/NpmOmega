@@ -1,5 +1,5 @@
 import "./Profile.css";
-import React, {useEffect, useRef, useState} from "react";
+import React, {useState} from "react";
 import $, {post} from "jquery";
 
 interface Props {
@@ -19,16 +19,42 @@ export default function Profile(props: Props) {
     const [password, setPassword] = useState(infoStorage.split("&")[2]);
     const [bio, setBio] = useState(infoStorage.split("&")[3]);
     const [idState, setId] = useState(infoStorage.split("&")[0]);
+    const [picture, setPicture] = useState<File>();
 
     function edit() {
         $.post("/edit", {
             id: idState,
             username: username,
             password: password,
-            bio: bio
-        }, function (data) {
+            bio: bio,
         });
         props.onRedirect("profileBack");
+    }
+
+    function upload(e: React.MouseEvent<HTMLButtonElement>) {
+        e.preventDefault();
+        if (picture != null) {
+            if (picture.type.toString().split("/")[0] == "image") {
+                $.post({
+                    url: "/profile"
+                    , contentType: picture.type
+                    , processData: false
+                    , data: picture
+                    , success: () => {
+                        const file = document.getElementById("file");
+                        // @ts-ignore
+                        file.value = null;
+                        $.post("/info", {id: id}, function (data) {
+                            localStorage.setItem("infoState", data);
+                            setId(data.split("&")[0]);
+                            setUserName(data.split("&")[1]);
+                            setPassword(data.split("&")[2]);
+                            setBio(data.split("&")[3]);
+                        });
+                    }
+                });
+            }
+        }
     }
 
     function logout() {
@@ -43,6 +69,11 @@ export default function Profile(props: Props) {
             setPassword(value);
         } else if (event.target.name == "bio") {
             setBio(value);
+        } else if (event.target.name == "picture") {
+            if (event.target.files != null) {
+                setPicture(event.target.files[0]);
+            }
+
         }
     }
 
@@ -55,7 +86,7 @@ export default function Profile(props: Props) {
             setBio(data.split("&")[3]);
         }
     });
-    return <form method="post">
+    return <form method={"post"}>
         <div className="picture-container">
             <img className="picture bg-dark"
                  src={"/profile?" + idState}
@@ -87,6 +118,15 @@ export default function Profile(props: Props) {
                 <input className="info-section-text bg-dark text-light" name="bio" value={bio}
                        type="text"
                        onChange={(e) => formStateUpdate(e)}/>
+            </div>
+            <div className="info-section">
+                <p className="info-section-heading bg-dark text-light">Picture</p>
+                <input id={"file"} className="upload-section bg-dark text-light" name="picture"
+                       type="file"
+                       onChange={(e) => formStateUpdate(e)}/>
+                <button onClick={(e) => upload(e)}
+                        className="upload-button btn btn-secondary">Upload
+                </button>
             </div>
         </div>
     </form>;

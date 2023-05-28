@@ -77,3 +77,19 @@
     position: absolute;
     bottom: -10px;
 }
+.upload-button{
+    width: 10%;
+    height: 6%;
+    scale: 0.9;
+}
+.upload-section{
+    width: 5vw;
+    height: 100%;
+    scale: 0.9;
+    border-radius: 10px;
+    border-color: transparent transparent transparent transparent;
+    text-align: left;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
