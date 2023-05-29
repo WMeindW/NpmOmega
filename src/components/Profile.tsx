@@ -19,6 +19,7 @@ export default function Profile(props: Props) {
     const [password, setPassword] = useState(infoStorage.split("&")[2]);
     const [bio, setBio] = useState(infoStorage.split("&")[3]);
     const [idState, setId] = useState(infoStorage.split("&")[0]);
+    const [pronouns, setPronouns] = useState(infoStorage.split("&")[4]);
     const [picture, setPicture] = useState<File>();
 
     function edit() {
@@ -27,6 +28,7 @@ export default function Profile(props: Props) {
             username: username,
             password: password,
             bio: bio,
+            pronouns: pronouns
         });
         props.onRedirect("profileBack");
     }
@@ -69,6 +71,8 @@ export default function Profile(props: Props) {
             setPassword(value);
         } else if (event.target.name == "bio") {
             setBio(value);
+        } else if (event.target.name == "pronouns") {
+            setPronouns(value);
         } else if (event.target.name == "picture") {
             if (event.target.files != null) {
                 setPicture(event.target.files[0]);
@@ -84,6 +88,7 @@ export default function Profile(props: Props) {
             setUserName(data.split("&")[1]);
             setPassword(data.split("&")[2]);
             setBio(data.split("&")[3]);
+            setPronouns(data.split("&")[4]);
         }
     });
     return <form method={"post"}>
@@ -116,6 +121,12 @@ export default function Profile(props: Props) {
             <div className="info-section">
                 <p className="info-section-heading bg-dark text-light">Bio</p>
                 <input className="info-section-text bg-dark text-light" name="bio" value={bio}
+                       type="text"
+                       onChange={(e) => formStateUpdate(e)}/>
+            </div>
+            <div className="info-section">
+                <p className="info-section-heading bg-dark text-light">Pronouns</p>
+                <input className="info-section-text bg-dark text-light" name="pronouns" value={pronouns}
                        type="text"
                        onChange={(e) => formStateUpdate(e)}/>
             </div>
