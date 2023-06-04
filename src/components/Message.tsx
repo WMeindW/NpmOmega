@@ -8,16 +8,20 @@ interface Props {
 }
 
 export default function Message(props: Props) {
+
+    const id = document.cookie.split("id=")[1];
     let userStorage = localStorage.getItem("userState");
     let friendStorage = localStorage.getItem("friendState");
     let messageStorage = localStorage.getItem("messageState");
+    let pictureStorage = localStorage.getItem("pictureState");
     let usernameState: string = "";
     let hookStorage = localStorage.getItem("hookState");
-    const id = document.cookie.split("id=")[1];
+    const [picture, setPicture] = useState(pictureStorage);
     const [message, setMessage] = useState(parseMessage(messageStorage));
     const [profile, setProfile] = useState(parseUser(userStorage));
     const [friends, setFriends] = useState(parseFriends(friendStorage));
     const [hook, setHook] = useState(parseHook(hookStorage));
+
     let index = 0;
     window.addEventListener("mousemove", () => updateMessages())
     window.addEventListener("keypress", (e) => updateMessagesOnKey(e))
@@ -60,15 +64,25 @@ export default function Message(props: Props) {
         if (data == null) {
             return <div></div>;
         }
-        return <>
-            <div className="profile-img"><img className="img" src={"/profile?" + data.split("&")[0]}
-                                              alt="profile.png"/>
-            </div>
-            <div className="profile-username">{data.split("&")[1]}</div>
-            <button type="button" onClick={() => props.onRedirect("profile")}
-                    className="profile-menu bg-primary text-light">+
-            </button>
-        </>;
+        if (picture == null) {
+            return <>
+                <div className="profile-img"><img src={""} alt={"profile.png"}/>
+                </div>
+                <div className="profile-username">{data.split("&")[1]}</div>
+                <button type="button" onClick={() => props.onRedirect("profile")}
+                        className="profile-menu bg-primary text-light">+
+                </button>
+            </>;
+        } else {
+            return <>
+                <div className="profile-img"><img src={"data:image/png;base64," + picture} alt={"profile.png"}/>
+                </div>
+                <div className="profile-username">{data.split("&")[1]}</div>
+                <button type="button" onClick={() => props.onRedirect("profile")}
+                        className="profile-menu bg-primary text-light">+
+                </button>
+            </>;
+        }
     }
 
     function parseFriends(data: string | null): JSX.Element[] {
@@ -79,13 +93,16 @@ export default function Message(props: Props) {
         let friends: JSX.Element[] = [];
         for (let i = 0; i < list.length - 1; i++) {
             list[i] = list[i].replace("#", "");
-            friends[i] = <div className="card row usr-card mx-auto" onClick={() => reload(list[i].split("&")[0])}>
-                <div className="profile-img"><img className="img"
-                                                  src={"/profile?" + list[i].split("&")[1]}
-                                                  alt="profile.png"/></div>
-                <div className="profile-username">{list[i].split("&")[0]}</div>
-                <div className="profile-activity text-light">{list[i].split("&")[2]}</div>
-            </div>;
+            if (localStorage.getItem("active") == i.toString()) {
+                friends[i] = <div id={i.toString()} className="card row usr-card mx-auto"
+                                  onClick={(event) => reload(event, list[i].split("&")[0])}>
+                    <div className="profile-img"><img className="img"
+                                                      src={"/profile?" + list[i].split("&")[1]}
+                                                      alt="profile.png"/></div>
+                    <div className="profile-username">{list[i].split("&")[0]}</div>
+                    <div className="profile-activity text-light">{list[i].split("&")[2]}</div>
+                </div>;
+            }
         }
         return friends;
     }
@@ -140,7 +157,7 @@ export default function Message(props: Props) {
         }
     }
 
-    function reload(username: string) {
+    function reload(event: React.MouseEvent<HTMLDivElement, MouseEvent>, username: string) {
         if (username != usernameState) {
             usernameState = username;
         }
@@ -157,6 +174,15 @@ export default function Message(props: Props) {
                     setHook(parseHook(data));
                 }
             });
+            // @ts-ignore
+            let elements = document.getElementById("row").children;
+            for (let i = 0; i < elements.length; i++) {
+                if (elements[i].classList.contains("active") && elements[i] != event.currentTarget) {
+                    elements[i].classList.remove("active", "bg-dark");
+                }
+            }
+            event.currentTarget.classList.add("active", "bg-dark");
+            localStorage.setItem("active", event.currentTarget.id)
         }
     }
 
@@ -168,12 +194,18 @@ export default function Message(props: Props) {
 
     });
     $.post("/user", {id: id}, function (data) {
-            if (data != userStorage) {
-                localStorage.setItem("userState", data);
-                setProfile(parseUser(data));
-            }
+        if (data != userStorage) {
+            localStorage.setItem("userState", data);
+            setProfile(parseUser(data));
         }
-    );
+    });
+    $.get("/profile", {id: id}, function (data) {
+        if (data != pictureStorage) {
+            localStorage.setItem("pictureState", data);
+            setPicture(data);
+        }
+    });
+
     return <div>
         <div className="msg-container text-light">
             <div className="inner-container-msg bg-dark">
@@ -187,7 +219,7 @@ export default function Message(props: Props) {
         </div>
         <div className="usr-container text-light">
             <div className="inner-container-usr bg-dark">
-                <div className="row usr-row mx-auto">
+                <div id="row" className="row usr-row mx-auto">
                     {friends}
                 </div>
             </div>
