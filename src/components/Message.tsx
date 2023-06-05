@@ -66,7 +66,7 @@ export default function Message(props: Props) {
         }
         if (picture == null) {
             return <>
-                <div className="profile-img"><img src={""} alt={"profile.png"}/>
+                <div className="profile-img"><img className="img" src={""} alt={"profile.png"}/>
                 </div>
                 <div className="profile-username">{data.split("&")[1]}</div>
                 <button type="button" onClick={() => props.onRedirect("profile")}
@@ -75,7 +75,7 @@ export default function Message(props: Props) {
             </>;
         } else {
             return <>
-                <div className="profile-img"><img src={"data:image/png;base64," + picture} alt={"profile.png"}/>
+                <div className="profile-img"><img className="img" src={"data:image/png;base64," + picture} alt={"profile.png"}/>
                 </div>
                 <div className="profile-username">{data.split("&")[1]}</div>
                 <button type="button" onClick={() => props.onRedirect("profile")}

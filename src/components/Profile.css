@@ -77,19 +77,23 @@
     position: absolute;
     bottom: -10px;
 }
-.upload-button{
-    width: 10%;
-    height: 6%;
-    scale: 0.9;
+
+.upload-button {
+    width: 6em;
+    height: 2em;
+    text-align: center;
 }
-.upload-section{
-    width: 5vw;
+
+.upload-section {
+    width: 90%;
     height: 100%;
     scale: 0.9;
     border-radius: 10px;
     border-color: transparent transparent transparent transparent;
     text-align: left;
+    font-size: 150%;
     position: absolute;
     top: 0;
     right: 0;
+    resize: none;
 }

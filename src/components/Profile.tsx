@@ -15,12 +15,15 @@ export default function Profile(props: Props) {
         // @ts-ignore
         infoStorage = localStorage.getItem("infoState");
     }
+    let pictureStorage = localStorage.getItem("pictureState");
     const [username, setUserName] = useState(infoStorage.split("&")[1]);
     const [password, setPassword] = useState(infoStorage.split("&")[2]);
     const [bio, setBio] = useState(infoStorage.split("&")[3]);
     const [idState, setId] = useState(infoStorage.split("&")[0]);
     const [pronouns, setPronouns] = useState(infoStorage.split("&")[4]);
     const [picture, setPicture] = useState<File>();
+    const [profilePicture, setProfilePicture] = useState(pictureStorage);
+
 
     function edit() {
         $.post("/edit", {
@@ -91,10 +94,17 @@ export default function Profile(props: Props) {
             setPronouns(data.split("&")[4]);
         }
     });
+    $.get("/profile", {id: id}, function (data) {
+        if (data != pictureStorage) {
+            localStorage.setItem("pictureState", data);
+            setProfilePicture(data);
+        }
+    });
+
     return <form method={"post"}>
         <div className="picture-container">
             <img className="picture bg-dark"
-                 src={"/profile?" + idState}
+                 src={"data:image/png;base64," + profilePicture}
                  alt="profile.png"/>
             <button onClick={() => edit()}
                     className="action-button btn btn-primary">Save
