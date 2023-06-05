@@ -27,7 +27,7 @@ export default function Message(props: Props) {
     window.addEventListener("keypress", (e) => updateMessagesOnKey(e))
 
     function updateMessages() {
-        /*index++;
+        index++;
         if (index > 20 && usernameState != "") {
             $.post("/message", {id: id, username: usernameState}, function (data) {
                 if (data != messageStorage) {
@@ -36,28 +36,28 @@ export default function Message(props: Props) {
                 }
             });
             index = 0;
-        }*/
+        }
     }
 
     function updateMessagesOnKey(event: KeyboardEvent) {
-        /* index++;
-         if (event.key === "Enter" && usernameState != "") {
-             $.post("/message", {id: id, username: usernameState}, function (data) {
-                 if (data != messageStorage) {
-                     localStorage.setItem("messageState", data);
-                     setMessage(parseMessage(data));
-                 }
-                 index = 0;
-             });
-         } else if (index > 5 && usernameState != "") {
-             $.post("/message", {id: id, username: usernameState}, function (data) {
-                 if (data != messageStorage) {
-                     localStorage.setItem("messageState", data);
-                     setMessage(parseMessage(data));
-                 }
-             });
-             index = 0;
-         }*/
+        index++;
+        if (event.key === "Enter" && usernameState != "") {
+            $.post("/message", {id: id, username: usernameState}, function (data) {
+                if (data != messageStorage) {
+                    localStorage.setItem("messageState", data);
+                    setMessage(parseMessage(data));
+                }
+                index = 0;
+            });
+        } else if (index > 5 && usernameState != "") {
+            $.post("/message", {id: id, username: usernameState}, function (data) {
+                if (data != messageStorage) {
+                    localStorage.setItem("messageState", data);
+                    setMessage(parseMessage(data));
+                }
+            });
+            index = 0;
+        }
     }
 
     function parseUser(data: string | null): JSX.Element {
@@ -75,7 +75,8 @@ export default function Message(props: Props) {
             </>;
         } else {
             return <>
-                <div className="profile-img"><img className="img" src={"data:image/png;base64," + picture} alt={"profile.png"}/>
+                <div className="profile-img"><img className="img" src={"data:image/png;base64," + picture}
+                                                  alt={"profile.png"}/>
                 </div>
                 <div className="profile-username">{data.split("&")[1]}</div>
                 <button type="button" onClick={() => props.onRedirect("profile")}
@@ -94,10 +95,19 @@ export default function Message(props: Props) {
         for (let i = 0; i < list.length - 1; i++) {
             list[i] = list[i].replace("#", "");
             if (localStorage.getItem("active") == i.toString()) {
+                friends[i] = <div id={i.toString()} className="card row usr-card-active bg-dark mx-auto"
+                                  onClick={(event) => reload(event, list[i].split("&")[0])}>
+                    <div className="profile-img"><img className="img"
+                                                      src={"data:image/png;base64," + list[i].split("&")[3]}
+                                                      alt="profile.png"/></div>
+                    <div className="profile-username">{list[i].split("&")[0]}</div>
+                    <div className="profile-activity text-light">{list[i].split("&")[2]}</div>
+                </div>;
+            } else {
                 friends[i] = <div id={i.toString()} className="card row usr-card mx-auto"
                                   onClick={(event) => reload(event, list[i].split("&")[0])}>
                     <div className="profile-img"><img className="img"
-                                                      src={"/profile?" + list[i].split("&")[1]}
+                                                      src={"data:image/png;base64," + list[i].split("&")[3]}
                                                       alt="profile.png"/></div>
                     <div className="profile-username">{list[i].split("&")[0]}</div>
                     <div className="profile-activity text-light">{list[i].split("&")[2]}</div>
@@ -167,21 +177,25 @@ export default function Message(props: Props) {
                     localStorage.setItem("messageState", data);
                     setMessage(parseMessage(data));
                 }
-            });
+            }).fail(() => alert("Network Error"));
             $.post("/sendHook", {id: id, username: username}, function (data) {
                 if (data != hookStorage) {
                     localStorage.setItem("hookState", data);
                     setHook(parseHook(data));
                 }
-            });
+            }).fail(() => alert("Network Error"));
             // @ts-ignore
             let elements = document.getElementById("row").children;
             for (let i = 0; i < elements.length; i++) {
-                if (elements[i].classList.contains("active") && elements[i] != event.currentTarget) {
-                    elements[i].classList.remove("active", "bg-dark");
+                if (elements[i].classList.contains("usr-card-active") && elements[i] != event.currentTarget) {
+                    elements[i].classList.remove("usr-card-active", "bg-dark");
+                    elements[i].classList.add("usr-card");
+
                 }
             }
-            event.currentTarget.classList.add("active", "bg-dark");
+            event.currentTarget.classList.add("usr-card-active", "bg-dark");
+            event.currentTarget.classList.remove("usr-card");
+
             localStorage.setItem("active", event.currentTarget.id)
         }
     }
@@ -192,19 +206,19 @@ export default function Message(props: Props) {
             setFriends(parseFriends(data));
         }
 
-    });
+    }).fail(() => alert("Network Error"));
     $.post("/user", {id: id}, function (data) {
         if (data != userStorage) {
             localStorage.setItem("userState", data);
             setProfile(parseUser(data));
         }
-    });
+    }).fail(() => alert("Network Error"));
     $.get("/profile", {id: id}, function (data) {
         if (data != pictureStorage) {
             localStorage.setItem("pictureState", data);
             setPicture(data);
         }
-    });
+    }).fail(() => alert("Network Error"));
 
     return <div>
         <div className="msg-container text-light">

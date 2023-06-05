@@ -32,7 +32,7 @@ export default function Profile(props: Props) {
             password: password,
             bio: bio,
             pronouns: pronouns
-        });
+        }).fail(()=> alert("Network Error"));
         props.onRedirect("profileBack");
     }
 
@@ -55,9 +55,9 @@ export default function Profile(props: Props) {
                             setUserName(data.split("&")[1]);
                             setPassword(data.split("&")[2]);
                             setBio(data.split("&")[3]);
-                        });
+                        }).fail(()=> alert("Network Error"));
                     }
-                });
+                }).fail(()=> alert("Network Error"));
             }
         }
     }
@@ -93,13 +93,13 @@ export default function Profile(props: Props) {
             setBio(data.split("&")[3]);
             setPronouns(data.split("&")[4]);
         }
-    });
+    }).fail(()=> alert("Network Error"));
     $.get("/profile", {id: id}, function (data) {
         if (data != pictureStorage) {
             localStorage.setItem("pictureState", data);
             setProfilePicture(data);
         }
-    });
+    }).fail(()=> alert("Network Error"));
 
     return <form method={"post"}>
         <div className="picture-container">

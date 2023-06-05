@@ -213,9 +213,11 @@
     bottom: 15%;
     left: 86%;
 }
+
 .usr-card-active {
     width: 99%;
     height: 5.5em;
     margin-bottom: 10px;
     border-color: #1a1b1f #1a1b1f #1a1b1f #1a1b1f;
+    border-width: 5px;
 }

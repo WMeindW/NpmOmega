@@ -9,7 +9,6 @@ interface Props {
 export default function AddFriend(props: Props) {
     const id = document.cookie.split("id=")[1];
     const [queries, setQueries] = useState([<div></div>]);
-    let element = null;
 
     function query(query: string) {
         $.post("/query", {id: id, query: query}, function (data) {
@@ -18,7 +17,7 @@ export default function AddFriend(props: Props) {
             for (let i = 0; i < list.length - 1; i++) {
                 elements[i] = <div className="card user-card row bg-dark">
                     <div className="profile-img"><img className="img text-light"
-                                                      src={"/profile?" + list[i].split("&")[0]}
+                                                      src={"data:image/png;base64," + list[i].split("&")[2]}
                                                       alt="profile.png"/></div>
                     <div className="profile-username text-light">{list[i].split("&")[1]}</div>
                     <button type="button"
@@ -28,7 +27,7 @@ export default function AddFriend(props: Props) {
                 </div>;
             }
             setQueries(elements);
-        });
+        }).fail(()=> alert("Network Error"));
     }
 
     function add(addId: string, index: number) {
@@ -36,7 +35,7 @@ export default function AddFriend(props: Props) {
             const elements = queries;
             elements[index] = <div></div>;
             setQueries(elements);
-        });
+        }).fail(()=> alert("Network Error"));
     }
 
     return (
